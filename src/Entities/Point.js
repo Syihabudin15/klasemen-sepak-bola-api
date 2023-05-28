@@ -10,4 +10,4 @@ Point.belongsTo(Klub);
 Klub.hasOne(Point);
 
 await Point.sync();
-export { Point, Op };
+export { Point, Op, DB };

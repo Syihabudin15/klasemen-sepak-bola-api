@@ -14,4 +14,4 @@ DetailPertandingan.belongsTo(Pertandingan);
 Pertandingan.hasMany(DetailPertandingan);
 
 await DetailPertandingan.sync();
-export { DetailPertandingan, Op };
+export { DetailPertandingan, Op, DB };

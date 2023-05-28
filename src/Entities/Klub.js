@@ -7,4 +7,4 @@ const Klub = DB.define('m_klub', {
 }, {createdAt: false, updatedAt: false});
 
 await Klub.sync();
-export { Klub, Op };
+export { Klub, Op, DB };

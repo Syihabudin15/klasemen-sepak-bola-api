@@ -14,4 +14,4 @@ TransaksiPoint.belongsTo(DetailPertandingan);
 DetailPertandingan.hasOne(TransaksiPoint);
 
 await TransaksiPoint.sync();
-export { TransaksiPoint, Op };
+export { TransaksiPoint, Op, DB };

@@ -5,4 +5,4 @@ const Pertandingan = DB.define('m_pertandingan', {
 });
 
 await Pertandingan.sync();
-export { Pertandingan, Op };
+export { Pertandingan, Op, DB };
