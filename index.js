@@ -10,6 +10,7 @@ app.use(Cors());
 app.use(BodyParser.json());
 app.use('/api', Routers);
 
+
 try{
     app.listen(port, () => console.log(`App running in Port: ${port}`));
 }catch(err){
