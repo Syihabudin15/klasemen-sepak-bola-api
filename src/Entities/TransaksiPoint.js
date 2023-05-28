@@ -2,7 +2,7 @@ import { DB, DataTypes, Op } from "../Configs/DbConnection.js";
 import { Point } from './Point.js';
 import { DetailPertandingan } from "./DetailPertandingan.js";
 
-const TransaksiPoint = DB.define('', {
+const TransaksiPoint = DB.define('m_transaksi_point', {
     id: {type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true},
     status: {type: DataTypes.STRING, allowNull: false}
 });

@@ -21,7 +21,6 @@ export async function SaveKlub(req, res){
         res.status(201).json({msg: 'Klub berhasil ditambahkan', statusCode: 201, data: result});
     }catch(err){
         t.rollback();
-        console.log(err);
         return CustomError(res, 500);
     }
 };
@@ -35,7 +34,6 @@ export async function GetAllKlub(req, res){
         });
         res.status(200).json({msg: 'berhasil mengambil semua data Klub', statusCode: 200, data: result});
     }catch(err){
-        console.log(err);
         return CustomError(res, 500);
     }
 };
@@ -43,7 +41,7 @@ export async function GetAllKlub(req, res){
 export async function GetAllKlubPagination(req, res){
     const page = req.query.page || 1;
     const size = req.query.size || 10;
-    const skip = parseInt(parseInt(page) - 1) * parent(size);
+    const skip = parseInt(parseInt(page) - 1) * parseInt(size);
     try{
         let result = await Klub.findAndCountAll({
             limit: parseInt(size),
@@ -54,7 +52,6 @@ export async function GetAllKlubPagination(req, res){
         });
         res.status(200).json({msg: 'berhasil mengambil semua data Klub', statusCode: 200, data: result});
     }catch(err){
-        console.log(err);
         return CustomError(res, 500);
     }
 };
@@ -66,6 +63,6 @@ export async function GetKlubById(id){
             model: Point
         }]
     });
-    if(!klub) throw Error('Klub Not Found');
+    if(!klub) throw Error(`Klub dengan id ${id} tidak ditemukan`);
     return klub;
 };
