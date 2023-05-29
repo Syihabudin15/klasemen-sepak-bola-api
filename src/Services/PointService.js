@@ -17,11 +17,11 @@ export async function UpdatePoint(klubId, status){
         if(!point) throw Error('Point Klub Tidak Ditemukan');
         switch(status){
             case "MENANG":
-                point.point += 3;
+                point.point = point.point+2;
             case "SERI":
-                point.point += 1;
+                point.point = point.point+1;
             default:
-                point.point += 0;
+                point.point = point.point+0;
             
         };
         await point.save();

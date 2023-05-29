@@ -79,29 +79,44 @@ export async function GetKlasemen(req, res){
                 model: Point,
                 include: [{
                     model: TransaksiPoint,
-                    as: 'ME',
-                    where: {status: 'MENANG'},
-                    include: [{model: DetailPertandingan}]
-                },{
-                    model: TransaksiPoint,
-                    as: 'KA',
-                    where: {status: 'KALAH'},
-                    include: [{model: DetailPertandingan}]
-                },{
-                    model: TransaksiPoint,
-                    as: 'S',
-                    where: {status: 'SERI'},
-                    include: [{model: DetailPertandingan}]
+                    include: [{
+                        model: DetailPertandingan,
+                    }]
                 }]
-            }],
-            attributes: [
-                'nama_klub',
-                [Sequelize.fn('COUNT', Sequelize.col('ME.id')), 'ME']
-            ]
+            }]
         });
+        let klasemen = result.map(e => {
+            let data = [];
+            let gm = 0;
+            let gk = 0;
+            let menang = e.m_point.m_transaksi_points.filter(e => {
+                gm+= e.status == 'MENANG' ? e.m_detail_pertandingan.skor : 0;
+                return e.status == 'MENANG'
+            });
+            let kalah = e.m_point.m_transaksi_points.filter(e => {
+                gk += e.status == 'KALAH' ? e.m_detail_pertandingan.skor : 0;
+                return e.status == 'KALAH'
+            });
+            let seri = e.m_point.m_transaksi_points.filter(e => e.status == 'SERI');
 
-        res.status(200).json({msg: 'berhasil ambil data Klasemen', statusCode: 200, data: result});
-    }catch{
+            data.push({
+                id: e.id,
+                nama_klub: e.nama_klub,
+                kota_klub: e.kota_klub,
+                point: e.m_point.point,
+                ma: e.m_point.m_transaksi_points.length,
+                me: menang.length,
+                s: seri.length,
+                k: kalah.length,
+                gm,
+                gk
+            });
+            return data;
+        })
+
+        res.status(200).json({msg: 'berhasil ambil data Klasemen', statusCode: 200, data: klasemen});
+    }catch(err){
+        console.log(err);
         return CustomError(res, 500);
     }
 };

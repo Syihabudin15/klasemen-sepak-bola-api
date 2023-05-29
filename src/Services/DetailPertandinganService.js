@@ -18,6 +18,7 @@ export async function UpdateSkor(id, skor){
     try{
         let find = await DetailPertandingan.findOne({where: {id: id}});
         find.skor = skor;
+        find.mPertandinganId = find.mPertandinganId;
         await find.save();
     }catch{
         throw Error('Gagal Update Skor Pertandingan');

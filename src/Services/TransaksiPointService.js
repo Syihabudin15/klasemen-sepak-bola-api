@@ -16,15 +16,14 @@ export async function CreateTransaksiPoint(req, res){
         let tmp = skors[1];
         for(let i = 0; i < skors.length; i++){
             for(let j = 0; j < detail.length; j++){
-                console.log(detail[i].id);
                 if(detail[i].id === skors[j].id){
                     await UpdateSkor(detail[i].id, skors[j].skor);
-                    if(skors[i].skor > tmp.skor){
-                        await SetWinnerAndLoser(detail[i].m_klub.m_point.id, detail[i].id, 'MENANG', detail[i].mKlubId);
-                    }else if(skors[i].skor < tmp.skor){
-                        await SetWinnerAndLoser(detail[i].m_klub.m_point.id, detail[i].id, 'KALAH', detail[i].mKlubId);
+                    if(skors[i].skor > tmp.skor && skors[i].id !== tmp.id){
+                        await SetWinnerAndLoser(detail[i].m_klub.m_point.id, skors[j].id, 'MENANG', detail[i].mKlubId);
+                    }else if(skors[i].skor < tmp.skor && skors[i].id  !== tmp.id){
+                        await SetWinnerAndLoser(detail[i].m_klub.m_point.id, skors[j].id, 'KALAH', detail[i].mKlubId);
                     }else{
-                        await SetWinnerAndLoser(detail[i].m_klub.m_point.id, detail[i].id, 'SERI', detail[i].mKlubId);
+                        await SetWinnerAndLoser(detail[i].m_klub.m_point.id, skors[j].id, 'SERI', detail[i].mKlubId);
                     }
                 }
             }
@@ -35,7 +34,15 @@ export async function CreateTransaksiPoint(req, res){
         res.status(201).json({msg: 'Update Skor dan Point berhasil', statusCode: 201, data: detail});
     }catch(err){
         t.rollback();
-        console.log(err);
+        return CustomError(res, 500, err.message);
+    }
+};
+
+export async function BulkCreateTransaksiPoint(req, res){
+    const { pertandingans } = req.body;
+    try{
+        if(pertandingans.length === 0) return CustomError(res, 400, 'Mohon isi Pertandingan');
+    }catch(err){
         return CustomError(res, 500, err.message);
     }
 };

@@ -1,5 +1,5 @@
 import Express from "express";
-import { SaveKlub, GetAllKlub, GetAllKlubPagination } from '../Services/KlubService.js';
+import { SaveKlub, GetAllKlub, GetAllKlubPagination, GetKlasemen } from '../Services/KlubService.js';
 import { SavePertandingan } from "../Services/PertandinganService.js";
 import { CreateTransaksiPoint } from '../Services/TransaksiPointService.js';
 const Routers = Express.Router();
@@ -8,6 +8,7 @@ const Routers = Express.Router();
 Routers.post('/klub', SaveKlub);
 Routers.get('/klub', GetAllKlub);
 Routers.get('/klub/find', GetAllKlubPagination);
+Routers.get('/klasemen', GetKlasemen);
 
 // Pertandingan Controller
 Routers.post('/pertandingan', SavePertandingan);
