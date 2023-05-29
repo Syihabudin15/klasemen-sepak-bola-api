@@ -3,6 +3,7 @@ import { Pertandingan, DB } from '../Entities/Pertandingan.js';
 import { DetailPertandingan } from '../Entities/DetailPertandingan.js';
 import { GetKlubById } from "./KlubService.js";
 import { SaveDetailPertandingan } from "./DetailPertandinganService.js";
+import { Klub } from "../Entities/Klub.js";
 
 export async function SavePertandingan(req, res){
     const {klub1, klub2} = req.body;
@@ -50,13 +51,34 @@ export async function UpdateStatusPertandingan(id){
     }
 };
 
+export async function GetAllPertandingan(req, res){
+    try{
+        const result = await Pertandingan.findAll({
+            include: [{
+                model: DetailPertandingan,
+                include: [{
+                    model: Klub
+                }]
+            }]
+        });
+        res.status(200).json({msg: 'berhasil ambil semua data Pertandingan', statusCode: 200, data: result});
+    }catch(err){
+        return CustomError(res, 500);
+    }
+};
+
 export async function GetAllHistoryPertandingan(req, res){
     try{
         const result = await Pertandingan.findAll({
             where: {selesai: true},
-            include: [{model: DetailPertandingan}]
+            include: [{
+                model: DetailPertandingan,
+                include: [{
+                    model: Klub
+                }]
+            }]
         });
-        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan', statusCode: 200, data: result});
+        res.status(200).json({msg: 'berhasil ambil data riwayat Pertandingan', statusCode: 200, data: result});
     }catch(err){
         return CustomError(res, 500);
     }
@@ -66,9 +88,14 @@ export async function GetAllActivePertandingan(req, res){
     try{
         const result = await Pertandingan.findAll({
             where: {selesai: false},
-            include: [{model: DetailPertandingan}]
+            include: [{
+                model: DetailPertandingan,
+                include: [{
+                    model: Klub
+                }]
+            }]
         });
-        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan', statusCode: 200, data: result});
+        res.status(200).json({msg: 'berhasil ambil data aktif Pertandingan', statusCode: 200, data: result});
     }catch(err){
         return CustomError(res, 500);
         

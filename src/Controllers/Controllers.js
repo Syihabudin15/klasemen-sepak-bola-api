@@ -1,6 +1,6 @@
 import Express from "express";
 import { SaveKlub, GetAllKlub, GetKlasemen } from '../Services/KlubService.js';
-import { GetAllActivePertandingan, GetAllHistoryPertandingan, SavePertandingan } from "../Services/PertandinganService.js";
+import { GetAllActivePertandingan, GetAllHistoryPertandingan, GetAllPertandingan, SavePertandingan } from "../Services/PertandinganService.js";
 import { BulkCreateTransaksiPoint, CreateTransaksiPoint } from '../Services/TransaksiPointService.js';
 const Routers = Express.Router();
 
@@ -15,6 +15,7 @@ Routers.post('/pertandingan/update', CreateTransaksiPoint);
 Routers.post('/pertandingan/update/bulk', BulkCreateTransaksiPoint);
 Routers.get('/pertandingan/aktif', GetAllActivePertandingan);
 Routers.get('/pertandingan/riwayat', GetAllHistoryPertandingan);
+Routers.get('/pertandingan/all', GetAllPertandingan);
 
 
 export default Routers;
