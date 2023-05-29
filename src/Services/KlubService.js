@@ -43,24 +43,6 @@ export async function GetAllKlub(req, res){
     }
 };
 
-export async function GetAllKlubPagination(req, res){
-    const page = req.query.page || 1;
-    const size = req.query.size || 10;
-    const skip = parseInt(parseInt(page) - 1) * parseInt(size);
-    try{
-        let result = await Klub.findAndCountAll({
-            limit: parseInt(size),
-            offset: skip,
-            include: [{
-                model: Point
-            }]
-        });
-        res.status(200).json({msg: 'berhasil mengambil semua data Klub', statusCode: 200, data: result});
-    }catch(err){
-        return CustomError(res, 500);
-    }
-};
-
 export async function GetKlubById(id){
     let klub = await Klub.findOne({
         where: {id: id},
@@ -99,7 +81,7 @@ export async function GetKlasemen(req, res){
             });
             let seri = e.m_point.m_transaksi_points.filter(e => e.status == 'SERI');
 
-            data.push({
+            return {
                 id: e.id,
                 nama_klub: e.nama_klub,
                 kota_klub: e.kota_klub,
@@ -110,9 +92,11 @@ export async function GetKlasemen(req, res){
                 k: kalah.length,
                 gm,
                 gk
-            });
-            return data;
-        })
+            };
+        });
+        klasemen.sort((a,b) => {
+            return b.point - a.point
+        });
 
         res.status(200).json({msg: 'berhasil ambil data Klasemen', statusCode: 200, data: klasemen});
     }catch(err){

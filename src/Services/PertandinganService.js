@@ -48,4 +48,27 @@ export async function UpdateStatusPertandingan(id){
     }catch{
         throw Error('Gagal update status Pertandingan');
     }
-}
+};
+
+export async function GetAllHistoryPertandingan(req, res){
+    try{
+        const result = await Pertandingan.findAll({
+            where: {selesai: true}
+        });
+        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan'});
+    }catch(err){
+        return CustomError(res, 500);
+    }
+};
+
+export async function GetAllActivePertandingan(req, res){
+    try{
+        const result = await Pertandingan.findAll({
+            where: {selesai: false}
+        });
+        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan'});
+    }catch(err){
+        return CustomError(res, 500);
+        
+    }
+};
