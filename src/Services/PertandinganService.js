@@ -53,9 +53,10 @@ export async function UpdateStatusPertandingan(id){
 export async function GetAllHistoryPertandingan(req, res){
     try{
         const result = await Pertandingan.findAll({
-            where: {selesai: true}
+            where: {selesai: true},
+            include: [{model: DetailPertandingan}]
         });
-        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan'});
+        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan', statusCode: 200, data: result});
     }catch(err){
         return CustomError(res, 500);
     }
@@ -64,9 +65,10 @@ export async function GetAllHistoryPertandingan(req, res){
 export async function GetAllActivePertandingan(req, res){
     try{
         const result = await Pertandingan.findAll({
-            where: {selesai: false}
+            where: {selesai: false},
+            include: [{model: DetailPertandingan}]
         });
-        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan'});
+        res.status(200).json({msg: 'berhasil ambil data riwayat pertandingan', statusCode: 200, data: result});
     }catch(err){
         return CustomError(res, 500);
         
